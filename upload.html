@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Clothes - Smart Wardrobe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .nav-brand i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            color: #667eea;
+        }
+        
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #ff3742;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 20px;
+        }
+        
+        .upload-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .upload-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .upload-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+                .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .upload-area:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #764ba2;
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .upload-area h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .upload-area p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .image-preview {
+            position: relative;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .image-preview img {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .clothing-details {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group small {
+            margin-top: 0.25rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+                        padding: 1rem 2rem;
+            border-radius: 8px;
+            z-index: 10000;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .nav-menu {
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 100px 10px 20px;
+            }
+            
+            .upload-container {
+                padding: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-area {
+                padding: 2rem;
+            }
+            
+            .upload-area h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-tshirt"></i>
+                <span>Smart Wardrobe</span>
+            </div>
+            <div class="nav-menu">
+                <a href="upload.html" class="nav-link active">Upload</a>
+                <a href="wardrobe.html" class="nav-link">My Wardrobe</a>
+                <a href="recommendations.html" class="nav-link">Recommendations</a>
+                <button class="nav-link logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="upload-container">
+            <div class="upload-header">
+                <h1>Add New Clothing Item</h1>
+                <p>Upload your clothes to build your smart wardrobe</p>
+            </div>
+
+            <div class="upload-form">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Drag & Drop your image here</h3>
+                    <p>or click to browse files</p>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+
+                <div class="image-preview" id="imagePreview" style="display: none;">
+                    <img id="previewImg" src="" alt="Preview">
+                    <button class="remove-btn" onclick="removeImage()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form id="clothingForm" class="clothing-details">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemName">Item Name</label>
+                            <input type="text" id="itemName" placeholder="e.g., Blue Denim Jacket" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" required>
+                                <option value="">Select Category</option>
+                                <option value="tops">Tops</option>
+                                <option value="bottoms">Bottoms</option>
+                                <option value="dresses">Dresses</option>
+                                <option value="outerwear">Outerwear</option>
+                                <option value="shoes">Shoes</option>
+                                <option value="accessories">Accessories</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                                                <div class="form-group">
+                            <label for="color">Primary Color</label>
+                            <select id="color" required>
+                                <option value="">Select Color</option>
+                                <option value="black">Black</option>
+                                <option value="white">White</option>
+                                <option value="blue">Blue</option>
+                                <option value="red">Red</option>
+                                <option value="green">Green</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="purple">Purple</option>
+                                <option value="pink">Pink</option>
+                                <option value="brown">Brown</option>
+                                <option value="gray">Gray</option>
+                                <option value="orange">Orange</option>
+                                <option value="navy">Navy</option>
+                                <option value="beige">Beige</option>
+                                <option value="burgundy">Burgundy</option>
+                                <option value="olive">Olive</option>
+                                <option value="cream">Cream</option>
+                                <option value="multicolor">Multicolor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="season">Season</label>
+                            <select id="season" required>
+                                <option value="">Select Season</option>
+                                <option value="spring">Spring</option>
+                                <option value="summer">Summer</option>
+                                <option value="autumn">Autumn</option>
+                                <option value="winter">Winter</option>
+                                <option value="all-season">All Season</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="material">Material</label>
+                            <input type="text" id="material" placeholder="e.g., Cotton, Denim, Wool">
+                        </div>
+                        <div class="form-group">
+                            <label for="occasion">Occasion</label>
+                            <select id="occasion" required>
+                                <option value="">Select Occasion</option>
+                                <option value="casual">Casual</option>
+                                <option value="formal">Formal</option>
+                                <option value="business">Business</option>
+                                <option value="party">Party</option>
+                                <option value="sport">Sport</option>
+                                <option value="vacation">Vacation</option>
+                                <option value="date">Date</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tags">Tags (Optional)</label>
+                        <input type="text" id="tags" placeholder="e.g., vintage, favorite, new">
+                        <small>Separate tags with commas</small>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Add to Wardrobe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+            }
+            
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const imagePreview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            const clothingForm = document.getElementById('clothingForm');
+            
+            let currentFile = null;
+
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#764ba2';
+                uploadArea.style.background = 'rgba(102, 126, 234, 0.15)';
+            });
+
+            uploadArea.addEventListener('dragleave', (e) => {
+                                e.preventDefault();
+                uploadArea.style.borderColor = '#667eea';
+                uploadArea.style.background = 'rgba(102, 126, 234, 0.05)';
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#667eea';
+                uploadArea.style.background = 'rgba(102, 126, 234, 0.05)';
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            function handleFile(file) {
+                if (file.type.startsWith('image/')) {
+                    currentFile = file;
+                    const reader = new FileReader();
+                    
+                    reader.onload = (e) => {
+                        previewImg.src = e.target.result;
+                        uploadArea.style.display = 'none';
+                        imagePreview.style.display = 'block';
+                        
+                        autoSuggestCategory(file.name);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('Please select a valid image file');
+                }
+            }
+
+            function autoSuggestCategory(filename) {
+                const categorySelect = document.getElementById('category');
+                const lowerName = filename.toLowerCase();
+                
+                if (lowerName.includes('shirt') || lowerName.includes('blouse') || lowerName.includes('top')) {
+                    categorySelect.value = 'tops';
+                } else if (lowerName.includes('pants') || lowerName.includes('jeans') || lowerName.includes('shorts')) {
+                    categorySelect.value = 'bottoms';
+                } else if (lowerName.includes('dress')) {
+                    categorySelect.value = 'dresses';
+                } else if (lowerName.includes('jacket') || lowerName.includes('coat')) {
+                    categorySelect.value = 'outerwear';
+                } else if (lowerName.includes('shoe') || lowerName.includes('boot')) {
+                    categorySelect.value = 'shoes';
+                } else if (lowerName.includes('bag') || lowerName.includes('hat') || lowerName.includes('belt')) {
+                    categorySelect.value = 'accessories';
+                }
+            }
+
+            clothingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!currentFile) {
+                    alert('Please select an image first');
+                    return;
+                }
+                
+                const formData = {
+                    id: Date.now(),
+                    name: document.getElementById('itemName').value,
+                    category: document.getElementById('category').value,
+                    color: document.getElementById('color').value,
+                    season: document.getElementById('season').value,
+                    material: document.getElementById('material').value,
+                    occasion: document.getElementById('occasion').value,
+                    tags: document.getElementById('tags').value.split(',').map(tag => tag.trim()),
+                    image: previewImg.src,
+                    favorite: false,
+                    dateAdded: new Date().toISOString()
+                };
+                
+                let wardrobeItems = JSON.parse(localStorage.getItem('wardrobeItems') || '[]');
+                wardrobeItems.push(formData);
+                localStorage.setItem('wardrobeItems', JSON.stringify(wardrobeItems));
+                
+                showSuccessMessage('Item added to wardrobe successfully!');
+                
+                clothingForm.reset();
+                removeImage();
+            });
+        });
+
+        function removeImage() {
+            const uploadArea = document.getElementById('uploadArea');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            uploadArea.style.display = 'block';
+            imagePreview.style.display = 'none';
+                        currentFile = null;
+        }
+
+        function showSuccessMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'success-message';
+            messageDiv.textContent = message;
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
+
+            
