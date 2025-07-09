@@ -1,0 +1,568 @@
+```html
+                    setTimeout(() => {
+                        window.location.href = 'wardrobe.html';
+                    }, 1500);
+                }
+            });
+
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                
+                if (name && email && password) {
+                    localStorage.setItem('userName', name);
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('isLoggedIn', 'true');
+                    
+                    showSuccessMessage('Account created successfully!');
+                    setTimeout(() => {
+                        window.location.href = 'wardrobe.html';
+                    }, 1500);
+                }
+            });
+
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'wardrobe.html';
+            }
+        });
+
+        function showSuccessMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'success-message';
+            messageDiv.textContent = message;
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+```
+
+4. Click **"Commit new file"** at the bottom
+
+### **📄 File 2: wardrobe.html**
+1. Click **"Add file"** → **"Create new file"**
+2. **File name:** `wardrobe.html`
+3. **Copy and paste this EXACT content:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wardrobe - Smart Wardrobe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .nav-brand i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+          
+            color: #333;
+            ```html
+            font-weight: 500;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            color: #667eea;
+        }
+        
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #ff3742;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 20px;
+        }
+        
+        .wardrobe-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .wardrobe-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .wardrobe-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card i {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .wardrobe-controls {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .search-filter {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            position: relative;
+            min-width: 300px;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 20px;
+          ```html
+            background: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .wardrobe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .wardrobe-item {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .wardrobe-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item-image {
+            width: 100%;
+            height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .item-info {
+            padding: 1.5rem;
+        }
+        
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .item-category {
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-wardrobe {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .empty-wardrobe i {
+            font-size: 4rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .nav-menu {
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 100px 10px 20px;
+            }
+            
+            .wardrobe-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .wardrobe-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .wardrobe-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    ```html
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-tshirt"></i>
+                <span>Smart Wardrobe</span>
+            </div>
+            <div class="nav-menu">
+                <a href="upload.html" class="nav-link">Upload</a>
+                <a href="wardrobe.html" class="nav-link active">My Wardrobe</a>
+                <a href="recommendations.html" class="nav-link">Recommendations</a>
+                <button class="nav-link logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="wardrobe-header">
+            <h1>My Wardrobe</h1>
+            <div class="wardrobe-stats">
+                <div class="stat-card">
+                    <i class="fas fa-tshirt"></i>
+                    <span class="stat-number" id="totalItems">0</span>
+                    <span class="stat-label">Total Items</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-tags"></i>
+                    <span class="stat-number" id="totalCategories">0</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <span class="stat-number" id="favoriteItems">0</span>
+                    <span class="stat-label">Favorites</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="wardrobe-controls">
+            <div class="search-filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search your wardrobe...">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="tops">Tops</button>
+                    <button class="filter-btn" data-filter="bottoms">Bottoms</button>
+                    <button class="filter-btn" data-filter="dresses">Dresses</button>
+                    <button class="filter-btn" data-filter="outerwear">Outerwear</button>
+                    <button class="filter-btn" data-filter="shoes">Shoes</button>
+                    <button class="filter-btn" data-filter="accessories">Accessories</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="wardrobe-grid" id="wardrobeGrid">
+            <!-- Items will be dynamically loaded here -->
+        </div>
+
+        <div class="empty-wardrobe" id="emptyWardrobe">
+            <i class="fas fa-tshirt"></i>
+            <h3>Your wardrobe is empty</h3>
+            <p>Start building your smart wardrobe by adding some clothes!</p>
+            <a href="upload.html" class="btn-primary">Add First Item</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+            }
+            
+            loadWardrobeItems();
+            updateStats();
+            
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', filterItems);
+            
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    filterItems();
+                });
+            });
+        });
+
+                function loadWardrobeItems() {
+            const wardrobeItems = JSON.parse(localStorage.getItem('wardrobeItems') || '[]');
+            const wardrobeGrid = document.getElementById('wardrobeGrid');
+            const emptyWardrobe = document.getElementById('emptyWardrobe');
+            
+            if (wardrobeItems.length === 0) {
+                wardrobeGrid.style.display = 'none';
+                emptyWardrobe.style.display = 'block';
+                return;
+            }
+            
+            wardrobeGrid.style.display = 'grid';
+            emptyWardrobe.style.display = 'none';
+            
+            wardrobeGrid.innerHTML = '';
+            
+            wardrobeItems.forEach(item => {
+                const itemElement = createItemElement(item);
+                wardrobeGrid.appendChild(itemElement);
+            });
+        }
+
+        function createItemElement(item) {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'wardrobe-item';
+            itemDiv.dataset.category = item.category;
+            itemDiv.dataset.name = item.name.toLowerCase();
+            itemDiv.dataset.color = item.color;
+            itemDiv.dataset.season = item.season;
+            itemDiv.dataset.occasion = item.occasion;
+            
+            itemDiv.innerHTML = `
+                <div class="item-image">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="item-info">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-category">${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</div>
+                    <div class="item-details">
+                        <small>Color: ${item.color}</small><br>
+                        <small>Season: ${item.season}</small><br>
+                        <small>Occasion: ${item.occasion}</small>
+                    </div>
+                </div>
+            `;
+            
+            return itemDiv;
+        }
+
+        function filterItems() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            const items = document.querySelectorAll('.wardrobe-item');
+            
+            items.forEach(item => {
+                const matchesSearch = item.dataset.name.includes(searchTerm) || 
+                                    item.dataset.color.includes(searchTerm) ||
+                                    item.dataset.season.includes(searchTerm) ||
+                                    item.dataset.occasion.includes(searchTerm);
+                
+                const matchesFilter = activeFilter === 'all' || item.dataset.category === activeFilter;
+                
+                if (matchesSearch && matchesFilter) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function updateStats() {
+            const wardrobeItems = JSON.parse(localStorage.getItem('wardrobeItems') || '[]');
+            
+            document.getElementById('totalItems').textContent = wardrobeItems.length;
+            
+            const categories = new Set(wardrobeItems.map(item => item.category));
+            document.getElementById('totalCategories').textContent = categories.size;
+            
+            const favorites = wardrobeItems.filter(item => item.favorite);
+            document.getElementById('favoriteItems').textContent = favorites.length;
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
